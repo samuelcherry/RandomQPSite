@@ -1,101 +1,66 @@
 const questItems = [
   {
     id: 1,
-    title: "redberry pie",
-    icon: "/questItemImages/Redberry_pie.png",
+    title: "Egg",
+    icon: "/questItemImages/Egg.png",
     unlocked: "no",
-    quest: "The Knight's Sword"
+    accessable: "no",
+    quest: "Cook's Assistant",
+    requires: []
   },
   {
     id: 2,
-    title: "Ogre bellows",
-    icon: "/questItemImages/Ogre_bellows.png",
+    title: "Bucket of milk",
+    icon: "/questItemImages/Bucket_of_milk.png",
     unlocked: "yes",
-    quest: "Recipe For Disaster, Mourning's End Part I"
+    accessable: "no",
+    quest: "Cook's Assistant",
+    requires: [3]
   },
   {
     id: 3,
-    title: "Spiked boots",
-    icon: "/questItemImages/Spiked_boots.png",
+    title: "bucket",
+    icon: "/questItemImages/Bucket.png",
     unlocked: "no",
-    quest: "Desert Treasure I"
+    accessable: "no",
+    quest: "Cook's Assistant",
+    requires: []
   },
   {
     id: 4,
-    title: "Trowel",
-    icon: "/questItemImages/Trowel.png",
+    title: "Pot of flour",
+    icon: "/questItemImages/Pot_of_flour.png",
     unlocked: "no",
-    quest: "Another Slice of H.A.M."
+    accessable: "no",
+    quest: "Cook's Assistant",
+    requires: [5, 6]
   },
   {
     id: 5,
-    title: "Battered book",
-    icon: "/questItemImages/Battered_book.png",
+    title: "pot",
+    icon: "/questItemImages/Pot.png",
     unlocked: "no",
-    quest: "Elemental Workshop II"
+    accessable: "no",
+    quest: "Cook's Assistant",
+    requires: []
   },
   {
     id: 6,
-    title: "Battered key",
-    icon: "/questItemImages/Battered_key.png",
+    title: "grain",
+    icon: "/questItemImages/Grain.png",
     unlocked: "no",
-    quest: "Elemental Workshop II"
+    accessable: "no",
+    quest: "Cook's Assistant",
+    requires: []
   },
   {
-    id: 7,
-    title: "Fake beard",
-    icon: "/questItemImages/Fake_beard.png",
+    id: 6,
+    title: "Cooks's Assistant",
+    icon: "/questItemImages/Cook's_Assistant.png",
     unlocked: "no",
-    quest: "Wanted!, Forgettable Tale..."
-  },
-  {
-    id: 8,
-    title: "Red hot sauce",
-    icon: "/questItemImages/Red_hot_sauce.png",
-    unlocked: "no",
-    quest: "My Arm's Big Adventure"
-  },
-  {
-    id: 9,
-    title: "Red vine worm",
-    icon: "/questItemImages/Red_vine_worm.png",
-    unlocked: "no",
-    quest: "Fairy Tale I - Growing Pains"
-  },
-  {
-    id: 10,
-    title: "Dramen branch",
-    icon: "/questItemImages/Dramen_branch.png",
-    unlocked: "no",
-    quest: "The Knight's Sword"
-  },
-  {
-    id: 11,
-    title: "Black mushroom",
-    icon: "/questItemImages/Black_mushroom.png",
-    unlocked: "yes",
-    quest: "Shadow of the Storm"
-  },
-  {
-    id: 12,
-    title: "Strange implement",
-    icon: "/questItemImages/Strange_implement.png",
-    unlocked: "no",
-    quest: "Shadow of the Storm"
-  },
-  {
-    id: 13,
-    title: "Black Dye",
-    icon: "/questItemImages/Black_dye.png",
-    unlocked: "no",
-    quest: "Shadow of the Storm"
-  },
-  {
-    id: 14,
-    title: "Karamjan rum",
-    icon: "/questItemImages/Karamjan_rum.png",
-    unlocked: "no",
-    quest: "Tai Bwo Wannai Trio"
+    accessable: "no",
+    quest: "Recipe for Disaster",
+    requires: [1, 2, 4]
   }
 ];
 
