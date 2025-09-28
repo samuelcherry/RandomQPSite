@@ -1,68 +1,118 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+/* App.css */
 
 body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #1e1e2f; /* dark modern background */
+  color: #fff;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 2rem;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #ffcc00; /* accent color */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.gridContainer div {
+  background: #2a2a3f; /* card background */
+  border-radius: 12px;
+  padding: 10px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.gridContainer div:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.gridContainer img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.gridContainer div:hover img {
+  transform: rotate(-5deg) scale(1.1);
+}
+
+.card {
+  border-radius: 12px;
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
+  cursor: pointer;
+}
+
+/* Unlocked items — normal style */
+.unlocked {
+  background: #2a2a3f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Locked items — dimmed / greyed out */
+.locked {
+  background: #1f1f2a;
+  filter: grayscale(100%) brightness(0.6);
+  cursor: not-allowed;
+}
+
+/* Hover effect only for unlocked items */
+.unlocked:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.searchBar {
+  padding: 5px;
+  margin: 15px;
+  width: 75%;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  width: 80px;
+  height: 35px;
+  margin: 0.5rem; /* spacing similar to grid gap */
+  background: #2a2a3f; /* same as unlocked card background */
+  color: #fff;
+  border: none;
+  border-radius: 12px; /* match the card corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* same card shadow */
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  background: #3b3b55; /* slightly lighter on hover */
+}
+
+button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
