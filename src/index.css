@@ -96,9 +96,9 @@ button {
   height: 35px;
   margin: 0.5rem; /* spacing similar to grid gap */
   background: #2a2a3f; /* same as unlocked card background */
-  color: #fff;
+  color: #ffcc00;
   border: none;
-  border-radius: 12px; /* match the card corners */
+  border-radius: 6px; /* match the card corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* same card shadow */
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
