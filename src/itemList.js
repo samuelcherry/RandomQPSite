@@ -15,7 +15,7 @@ const questItems = [
   },
   {
     id: 3,
-    title: "redberry pie",
+    title: "Spiked boots",
     icon: "/questItemImages/Redberry_pie.png",
     unlocked: "no"
   },

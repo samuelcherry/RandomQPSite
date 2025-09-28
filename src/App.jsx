@@ -4,20 +4,36 @@ import questItems from "./itemList";
 
 function App() {
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
 
-  const filteredItems = questItems.filter((item) => {
-    if (filter === "all") return true;
-    if (filter === "locked") return item.unlocked === "no";
-    if (filter === "unlocked") return item.unlocked === "yes";
+  const filteredItems = questItems
+    .filter((item) => {
+      if (filter === "all") return true;
+      if (filter === "locked") return item.unlocked === "no";
+      if (filter === "unlocked") return item.unlocked === "yes";
 
-    return true;
-  });
+      return true;
+    })
+    .filter((item) => {
+      if (!search) return true;
+      const lowerSearch = search.toLowerCase();
+      return (
+        (item.title || "").toLowerCase().includes(lowerSearch) ||
+        (item.quest || "").toLowerCase().includes(lowerSearch)
+      );
+    });
 
   return (
     <>
       <h1> Random QP</h1>
-      <div>
-        <input className="searchBar"></input>
+      <div className="searchContainer">
+        <input
+          className="searchBar"
+          type="text"
+          placeholder="Search by name or quest..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        ></input>
         <button>Search</button>
       </div>
       {/* Filter buttons */}
