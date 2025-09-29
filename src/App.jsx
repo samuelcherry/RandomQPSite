@@ -1,8 +1,15 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import questItems from "./itemList";
+import { fetchItems } from "./utils/fetchPosts";
 
 function App() {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetchItems().then(setItems);
+  }, []);
+
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
 
