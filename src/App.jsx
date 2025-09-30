@@ -2,15 +2,24 @@ import "./App.css";
 import { useState, useEffect } from "react";
 
 import { fetchItems } from "./utils/fetchPosts";
+import { fetchUser } from "./utils/fetchUser";
 
 function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [unlocked, setUnlocked] = useState([]);
+  const [accessable, setAccessable] = useState([]);
 
   useEffect(() => {
     fetchItems().then((data) => {
       setItems(data);
       setLoading(false);
+    });
+    fetchUser().then((data) => {
+      setUnlocked(data[0].unlocked);
+      setAccessable(data[0].accessable);
+      console.log("unlocked: ", unlocked);
+      console.log("data: ", data[0].unlocked);
     });
   }, []);
 
@@ -41,6 +50,8 @@ function App() {
   return (
     <>
       <h1> Random QP</h1>
+      <p>{JSON.stringify(unlocked)}</p>
+      <p>{JSON.stringify(accessable)}</p>
       <div className="searchContainer">
         <input
           className="searchBar"
