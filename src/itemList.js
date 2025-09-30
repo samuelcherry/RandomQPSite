@@ -54,7 +54,7 @@ const questItems = [
     requires: []
   },
   {
-    id: 6,
+    id: 7,
     title: "Cooks's Assistant",
     icon: "/questItemImages/Cook's_Assistant.png",
     unlocked: "no",

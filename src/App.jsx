@@ -1,19 +1,23 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import questItems from "./itemList";
+
 import { fetchItems } from "./utils/fetchPosts";
 
 function App() {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchItems().then(setItems);
+    fetchItems().then((data) => {
+      setItems(data);
+      setLoading(false);
+    });
   }, []);
 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
 
-  const filteredItems = questItems
+  const filteredItems = items
     .filter((item) => {
       if (filter === "all") return true;
       if (filter === "locked") return item.unlocked === "no";
@@ -29,6 +33,10 @@ function App() {
         (item.quest || "").toLowerCase().includes(lowerSearch)
       );
     });
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>

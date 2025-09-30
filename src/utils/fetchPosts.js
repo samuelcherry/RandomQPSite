@@ -5,6 +5,7 @@ export const fetchItems = async () => {
     const { data: fetchData, error: fetchError } = await supabase
       .from("ItemList")
       .select("*");
+    console.log(fetchData);
     return fetchData || [];
   } catch (error) {
     console.error(error);
