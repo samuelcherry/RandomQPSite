@@ -5,9 +5,8 @@ export const fetchUser = async () => {
     const { data: UserData, error: UserError } = await supabase
       .from("Users")
       .select("*");
-    console.log(UserData);
     return UserData || [];
-  } catch (error) {
+  } catch (UserError) {
     console.error(UserError);
     setError(UserError);
   }

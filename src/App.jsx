@@ -8,20 +8,56 @@ function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [unlocked, setUnlocked] = useState([]);
-  const [accessable, setAccessable] = useState([]);
+  const [accessible, setAccessible] = useState([]);
 
   useEffect(() => {
     fetchItems().then((data) => {
-      setItems(data);
+      // sort by id ascending
+      const sorted = [...data].sort((a, b) => a.id - b.id);
+      setItems(sorted);
       setLoading(false);
+      console.log(sorted);
     });
     fetchUser().then((data) => {
       setUnlocked(data[0].unlocked);
-      setAccessable(data[0].accessable);
-      console.log("unlocked: ", unlocked);
-      console.log("data: ", data[0].unlocked);
+      setAccessible(data[0].accessible);
     });
   }, []);
+
+  useEffect(() => {
+    if (items.length === 0 || unlocked.length === 0 || accessible.length === 0)
+      return;
+
+    const updated = items.map((item) => {
+      let newItem = { ...item };
+
+      if (unlocked.includes(item.id)) {
+        newItem.unlocked = "yes";
+      }
+
+      if (accessible.includes(item.id)) {
+        newItem.accessible = "yes";
+      }
+
+      return newItem;
+    });
+    setItems(updated);
+  }, [unlocked, accessible]);
+
+  const checkStatus = () => {
+    for (let i = 0; i < unlocked.length; i++) {
+      if (items[i].id === i + 1) {
+        items.unlocked = "yes";
+      }
+    }
+    for (let i = 0; i < accessible.length; i++) {
+      if (items[i].id === i) {
+        items.accessible = "yes";
+      }
+    }
+  };
+
+  checkStatus();
 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -51,7 +87,7 @@ function App() {
     <>
       <h1> Random QP</h1>
       <p>{JSON.stringify(unlocked)}</p>
-      <p>{JSON.stringify(accessable)}</p>
+      <p>{JSON.stringify(accessible)}</p>
       <div className="searchContainer">
         <input
           className="searchBar"
