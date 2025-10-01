@@ -8,6 +8,7 @@ function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [unlocked, setUnlocked] = useState([]);
+  const [onlyUnlocked, setonlyUnlocked] = useState([]);
   const [accessible, setAccessible] = useState([]);
 
   useEffect(() => {
@@ -25,8 +26,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (items.length === 0 || unlocked.length === 0 || accessible.length === 0)
-      return;
+    if (items.length === 0 || unlocked.length === 0) return;
 
     const updated = items.map((item) => {
       let newItem = { ...item };
@@ -35,29 +35,20 @@ function App() {
         newItem.unlocked = "yes";
       }
 
-      if (accessible.includes(item.id)) {
+      if (
+        Array.isArray(item.requires) &&
+        ((item.requires.length === 0 && item.unlocked === "yes") ||
+          item.requires.every((req) => unlocked.includes(req))) &&
+        item.unlocked === "yes"
+      ) {
         newItem.accessible = "yes";
       }
 
       return newItem;
     });
+
     setItems(updated);
-  }, [unlocked, accessible]);
-
-  const checkStatus = () => {
-    for (let i = 0; i < unlocked.length; i++) {
-      if (items[i].id === i + 1) {
-        items.unlocked = "yes";
-      }
-    }
-    for (let i = 0; i < accessible.length; i++) {
-      if (items[i].id === i) {
-        items.accessible = "yes";
-      }
-    }
-  };
-
-  checkStatus();
+  }, [unlocked, accessible, items]);
 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -88,6 +79,7 @@ function App() {
       <h1> Random QP</h1>
       <p>{JSON.stringify(unlocked)}</p>
       <p>{JSON.stringify(accessible)}</p>
+      <p>{JSON.stringify(onlyUnlocked)}</p>
       <div className="searchContainer">
         <input
           className="searchBar"
@@ -105,16 +97,22 @@ function App() {
         <button onClick={() => setFilter("locked")}>Locked</button>
       </div>
       <div className="gridContainer">
-        {filteredItems.map((item) => (
-          <div
-            key={item.id}
-            className={
-              item.unlocked === "yes" ? "card unlocked" : "card locked"
-            }
-          >
-            <img src={item.icon} alt={item.title} title={item.title} />
-          </div>
-        ))}
+        {filteredItems.map((item) => {
+          let statusClass = "locked";
+
+          if (item.unlocked === "yes") {
+            statusClass = "unlocked";
+          }
+
+          if (item.accessible === "yes") {
+            statusClass = "accessible";
+          }
+          return (
+            <div key={item.id} className={`card ${statusClass}`}>
+              <img src={item.icon} alt={item.title} title={item.title} />
+            </div>
+          );
+        })}
       </div>
     </>
   );
