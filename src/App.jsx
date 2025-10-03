@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
+import addToAccessible from "./utils/addToAccessible";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -10,6 +11,7 @@ function App() {
   const [unlocked, setUnlocked] = useState([]);
   const [onlyUnlocked, setonlyUnlocked] = useState([]);
   const [accessible, setAccessible] = useState([]);
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     fetchItems().then((data) => {
@@ -22,34 +24,47 @@ function App() {
     fetchUser().then((data) => {
       setUnlocked(data[0].unlocked);
       setAccessible(data[0].accessible);
+      setUserId(data[0].id);
     });
   }, []);
 
   useEffect(() => {
     if (items.length === 0 || unlocked.length === 0) return;
+    let unlockedOnly = [];
+    let tempArray = [];
 
-    const updated = items.map((item) => {
-      let newItem = { ...item };
-
-      if (unlocked.includes(item.id)) {
-        newItem.unlocked = "yes";
+    items.forEach((item) => {
+      if (unlocked.includes(item.id) && !accessible.includes(item.id)) {
+        unlockedOnly.push(item.id);
+        console.log("check:", unlockedOnly);
       }
-
-      if (
-        Array.isArray(item.requires) &&
-        ((item.requires.length === 0 && item.unlocked === "yes") ||
-          item.requires.every((req) => unlocked.includes(req))) &&
-        item.unlocked === "yes"
-      ) {
-        newItem.accessible = "yes";
-      }
-
-      return newItem;
     });
+    function checkStatus() {
+      setItems((prevItems) =>
+        prevItems.map((item) => {
+          let newItem = { ...item };
 
-    setItems(updated);
-  }, [unlocked, accessible, items]);
+          if (unlocked.includes(item.id)) {
+            newItem.unlocked = "yes";
+          }
 
+          if (
+            unlockedOnly.includes(item.id) &&
+            Array.isArray(item.requires) &&
+            item.requires.every((reqId) => accessible.includes(reqId))
+          ) {
+            newItem.accessible = "yes";
+            unlockedOnly = unlockedOnly.filter((val) => val !== item.id);
+            tempArray.push(item.id);
+            checkStatus();
+          }
+          return newItem;
+        })
+      );
+    }
+  }, [unlocked, accessible]);
+
+  addToAccessible(userId, tempArray);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
 
