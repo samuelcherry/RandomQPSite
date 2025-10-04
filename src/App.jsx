@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import Header from "./components/Header";
+import Header from "./components/header";
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
 
@@ -11,7 +11,7 @@ function App() {
   const [accessible, setAccessible] = useState([]);
   const [userId, setUserId] = useState("");
   const [activeCard, setActiveCard] = useState(null);
-  const [sliderValue, setSliderValue] = useState(50);
+  const [LockedValue, setLockedValue] = useState("True");
 
   useEffect(() => {
     const localItems = localStorage.getItem("itemList");
@@ -176,19 +176,14 @@ function App() {
                 onClick={() => setActiveCard(isActive ? null : item.id)}
               >
                 <img src={item.icon} alt={item.title} title={item.title} />
-                <p>{item.title}</p>
               </div>
               <div className={`smallCard ${isActive ? "open" : ""}`}>
-                <div className="sliderContainer">
-                  <label htmlFor={`slider-${item.id}`}>
-                    Adjust Value: {sliderValue}
-                  </label>
+                <div className="radioContainer">
+                  <label htmlFor={`radio-${item.id}`}>Locked</label>
                   <input
-                    id={`slider-${item.id}`}
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={sliderValue}
+                    id={`radio-${item.id}`}
+                    type="radio"
+                    value={LockedValue}
                     onChange={(e) => setSliderValue(e.target.value)}
                   />
                 </div>
