@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-
+import Header from "./components/Header";
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
 import addToAccessible from "./utils/addToAccessible";
@@ -20,21 +20,15 @@ function App() {
       setItems(sorted);
       setLoading(false);
       console.log(sorted);
+      localStorage.setItem("itemList", data);
     });
     fetchUser().then((data) => {
       setUnlocked(data[0].unlocked);
       setAccessible(data[0].accessible);
       setUserId(data[0].id);
+      localStorage.setItem("userData", data);
     });
   }, []);
-
-  // useEffect(() => {
-  //   fetchUser().then((data) => {
-  //     setUnlocked(data[0].unlocked);
-  //     setAccessible(data[0].accessible);
-  //     setUserId(data[0].id);
-  //   });
-  // }, [unlocked, accessible]);
 
   useEffect(() => {
     if (items.length === 0 || unlocked.length === 0) return;
@@ -108,10 +102,7 @@ function App() {
 
   return (
     <>
-      <h1> Random QP</h1>
-      <p>{JSON.stringify(unlocked)}</p>
-      <p>{JSON.stringify(accessible)}</p>
-      <p>{JSON.stringify(onlyUnlocked)}</p>
+      <Header />
       <div className="searchContainer">
         <input
           className="searchBar"
