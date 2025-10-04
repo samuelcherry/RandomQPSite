@@ -3,31 +3,61 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
-import addToAccessible from "./utils/addToAccessible";
 
 function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [unlocked, setUnlocked] = useState([]);
-  const [onlyUnlocked, setonlyUnlocked] = useState([]);
   const [accessible, setAccessible] = useState([]);
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    fetchItems().then((data) => {
-      // sort by id ascending
-      const sorted = [...data].sort((a, b) => a.id - b.id);
-      setItems(sorted);
+    const localItems = localStorage.getItem("itemList");
+    const localUser = localStorage.getItem("userData");
+
+    if (!localItems || !localUser) {
+      console.log("Fetching form Supabase...");
+
+      if (!localItems) {
+        fetchItems().then((data) => {
+          // sort by id ascending
+          const sorted = [...data].sort((a, b) => a.id - b.id);
+          setItems(sorted);
+          setLoading(false);
+          console.log(sorted);
+          localStorage.setItem("itemList", JSON.stringify(data));
+        });
+      } else {
+        setItems(JSON.parse(localItems));
+        setLoading(false);
+      }
+
+      if (!localUser) {
+        fetchUser().then((data) => {
+          setUnlocked(data[0].unlocked);
+          setAccessible(data[0].accessible);
+          setUserId(data[0].id);
+          let viewUnlocked = data[0].unlocked;
+          console.log(viewUnlocked);
+          localStorage.setItem("userData", JSON.stringify(data));
+        });
+      } else {
+        const parsedUser = JSON.parse(localUser);
+        setUnlocked(parsedUser[0].unlocked);
+        setAccessible(parsedUser[0].accessible);
+        setUserId(parsedUser[0].id);
+      }
+    } else {
+      console.log("Loading from LocalStorage...");
+      const savedItems = JSON.parse(localItems);
+      const savedUser = JSON.parse(localUser);
+
+      setItems(savedItems);
+      setUnlocked(savedUser[0].unlocked);
+      setAccessible(savedUser[0].accessible);
+      setUserId(savedUser[0].id);
       setLoading(false);
-      console.log(sorted);
-      localStorage.setItem("itemList", data);
-    });
-    fetchUser().then((data) => {
-      setUnlocked(data[0].unlocked);
-      setAccessible(data[0].accessible);
-      setUserId(data[0].id);
-      localStorage.setItem("userData", data);
-    });
+    }
   }, []);
 
   useEffect(() => {
@@ -66,7 +96,9 @@ function App() {
           }
 
           if (tempArray.length > 0) {
-            addToAccessible(userId, tempArray);
+            accessible.push(tempArray);
+            tempArray = [];
+            console.log(accessible);
           }
 
           return newItem;
@@ -123,7 +155,7 @@ function App() {
         {filteredItems.map((item) => {
           let statusClass = "locked";
 
-          if (item.unlocked === "yes") {
+          if (unlocked.includes(item.id)) {
             statusClass = "unlocked";
           }
 

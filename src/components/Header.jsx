@@ -3,6 +3,7 @@ import React from "react";
 const Header = () => {
   const handleSave = (e) => {
     console.log("saved");
+    console.log(unlocked);
   };
 
   const handleSync = (e) => {
