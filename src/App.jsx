@@ -134,7 +134,14 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header
+        unlocked={unlocked}
+        setUnlocked={setUnlocked}
+        accessible={accessible}
+        setAccessible={setAccessible}
+        userId={userId}
+        setUserId={setUserId}
+      />
       <div className="searchContainer">
         <input
           className="searchBar"
