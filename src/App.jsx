@@ -10,6 +10,8 @@ function App() {
   const [unlocked, setUnlocked] = useState([]);
   const [accessible, setAccessible] = useState([]);
   const [userId, setUserId] = useState("");
+  const [activeCard, setActiveCard] = useState(null);
+  const [sliderValue, setSliderValue] = useState(50);
 
   useEffect(() => {
     const localItems = localStorage.getItem("itemList");
@@ -162,16 +164,35 @@ function App() {
         {filteredItems.map((item) => {
           let statusClass = "locked";
 
-          if (unlocked.includes(item.id)) {
-            statusClass = "unlocked";
-          }
+          if (unlocked.includes(item.id)) statusClass = "unlocked";
+          if (accessible.includes(item.id)) statusClass = "accessible";
 
-          if (accessible.includes(item.id)) {
-            statusClass = "accessible";
-          }
+          const isActive = activeCard === item.id;
+
           return (
-            <div key={item.id} className={`card ${statusClass}`}>
-              <img src={item.icon} alt={item.title} title={item.title} />
+            <div key={item.id} className="cardWrapper">
+              <div
+                className={`card ${statusClass}`}
+                onClick={() => setActiveCard(isActive ? null : item.id)}
+              >
+                <img src={item.icon} alt={item.title} title={item.title} />
+                <p>{item.title}</p>
+              </div>
+              <div className={`smallCard ${isActive ? "open" : ""}`}>
+                <div className="sliderContainer">
+                  <label htmlFor={`slider-${item.id}`}>
+                    Adjust Value: {sliderValue}
+                  </label>
+                  <input
+                    id={`slider-${item.id}`}
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={sliderValue}
+                    onChange={(e) => setSliderValue(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
           );
         })}
