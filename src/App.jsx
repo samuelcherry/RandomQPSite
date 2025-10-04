@@ -28,6 +28,14 @@ function App() {
     });
   }, []);
 
+  // useEffect(() => {
+  //   fetchUser().then((data) => {
+  //     setUnlocked(data[0].unlocked);
+  //     setAccessible(data[0].accessible);
+  //     setUserId(data[0].id);
+  //   });
+  // }, [unlocked, accessible]);
+
   useEffect(() => {
     if (items.length === 0 || unlocked.length === 0) return;
     let unlockedOnly = [];
@@ -39,6 +47,7 @@ function App() {
         console.log("check:", unlockedOnly);
       }
     });
+
     function checkStatus() {
       setItems((prevItems) =>
         prevItems.map((item) => {
@@ -50,21 +59,29 @@ function App() {
 
           if (
             unlockedOnly.includes(item.id) &&
-            Array.isArray(item.requires) &&
-            item.requires.every((reqId) => accessible.includes(reqId))
+            ((Array.isArray(item.requires) &&
+              item.requires.every((reqId) => accessible.includes(reqId))) ||
+              (Array.isArray(item.requires) && item.requires.length === 0))
           ) {
             newItem.accessible = "yes";
             unlockedOnly = unlockedOnly.filter((val) => val !== item.id);
+            setAccessible((prev) => [...prev, item.id]);
             tempArray.push(item.id);
+            console.log("tempArray: ", tempArray);
             checkStatus();
           }
+
+          if (tempArray.length > 0) {
+            addToAccessible(userId, tempArray);
+          }
+
           return newItem;
         })
       );
     }
+    checkStatus();
   }, [unlocked, accessible]);
 
-  addToAccessible(userId, tempArray);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
 
@@ -119,7 +136,7 @@ function App() {
             statusClass = "unlocked";
           }
 
-          if (item.accessible === "yes") {
+          if (accessible.includes(item.id)) {
             statusClass = "accessible";
           }
           return (
