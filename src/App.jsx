@@ -179,7 +179,10 @@ function App() {
               </div>
               {isActive ? (
                 <div className="smallCardActive">
-                  <input></input>
+                  <label className="switch">
+                    <input type="checkbox" />
+                    <span className="slider"></span>
+                  </label>
                 </div>
               ) : (
                 <div className="smallCardInactive"></div>
