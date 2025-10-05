@@ -177,17 +177,13 @@ function App() {
               >
                 <img src={item.icon} alt={item.title} title={item.title} />
               </div>
-              <div className={`smallCard ${isActive ? "open" : ""}`}>
-                <div className="radioContainer">
-                  <label htmlFor={`radio-${item.id}`}>Locked</label>
-                  <input
-                    id={`radio-${item.id}`}
-                    type="radio"
-                    value={LockedValue}
-                    onChange={(e) => setSliderValue(e.target.value)}
-                  />
+              {isActive ? (
+                <div className="smallCardActive">
+                  <input></input>
                 </div>
-              </div>
+              ) : (
+                <div className="smallCardInactive"></div>
+              )}
             </div>
           );
         })}
