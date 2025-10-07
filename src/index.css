@@ -1,4 +1,13 @@
 /* App.css */
+.mainContainer {
+  display: grid;
+  grid-template-columns: 175px 1fr;
+  grid-template-rows: repeat(3rem);
+  grid-template-areas:
+    "sidebar header"
+    "sidebar gridContent"
+    "sidebar gridContent";
+}
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -17,18 +26,45 @@ h1 {
 }
 
 .gridContainer {
+  grid-area: gridContent;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
   justify-items: center;
   align-items: center;
+  padding-bottom: 15px;
 }
-/* this is where we should look to make the boxes bigger */
+
+.headerContainer {
+  grid-area: header;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.sidebarContainer {
+  grid-area: sidebar;
+  padding: 15px;
+}
+
+.headerTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filterContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+.searchContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .gridContainer div {
   border-radius: 12px;
-  padding: 10px;
-  width: 100px;
-  height: 80px;
+  width: 150px;
+  height: 150px;
   display: flex;
   margin-top: 10px;
   justify-content: center;
@@ -37,7 +73,11 @@ h1 {
   cursor: pointer;
 }
 
-.gridContainer div:hover {
+.cardWrapper {
+  flex-direction: column;
+}
+
+.cardWrapper:hover {
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
@@ -47,23 +87,10 @@ h1 {
   max-height: 100%;
   object-fit: contain;
   border-radius: 8px;
-  transition: transform 0.3s;
 }
 
 .gridContainer div:hover img {
   transform: rotate(-5deg) scale(1.1);
-}
-
-.card {
-  border-radius: 12px;
-  padding: 10px;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
-  cursor: pointer;
 }
 
 /* Unlocked items — normal style */
@@ -128,51 +155,28 @@ button:active {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-.headerContainer {
-  width: 100%;
-  height: 85px;
-  margin-bottom: 15px;
-}
-
-.cardWrapper {
-  display: flex;
-  flex-direction: column;
-  background-color: green;
-}
-
 .smallCard {
-  border-radius: 12px;
-  padding: 10px;
-  width: 80px;
-  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
   cursor: pointer;
+  max-height: 50px;
 }
 
 .smallCardActive {
-  border-radius: 12px;
-  padding: 10px;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
-  cursor: pointer;
+  flex-direction: column;
+  max-height: 50px;
 }
 
 .smallCardInactive {
-  opacity: 0;
+  flex-direction: column;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 30px;
+  height: 16px;
 }
 
 .switch input {
@@ -197,10 +201,8 @@ button:active {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 15px;
+  width: 15px;
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -216,7 +218,15 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+.sliderGroup {
+  max-height: 20px;
+}
+
+.sliderTitle {
+  max-height: 20px;
 }

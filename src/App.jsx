@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import Header from "./components/header";
+import Sidebar from "./components/Sidebar";
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
 
@@ -135,7 +136,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="mainContainer">
       <Header
         unlocked={unlocked}
         setUnlocked={setUnlocked}
@@ -143,23 +144,15 @@ function App() {
         setAccessible={setAccessible}
         userId={userId}
         setUserId={setUserId}
+        search={search}
+        setSearch={setSearch}
+        filter={filter}
+        setFilter={setFilter}
       />
-      <div className="searchContainer">
-        <input
-          className="searchBar"
-          type="text"
-          placeholder="Search by name or quest..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        ></input>
-        <button>Search</button>
-      </div>
+      <Sidebar />
+
       {/* Filter buttons */}
-      <div>
-        <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("unlocked")}>Unlocked</button>
-        <button onClick={() => setFilter("locked")}>Locked</button>
-      </div>
+
       <div className="gridContainer">
         {filteredItems.map((item) => {
           let statusClass = "locked";
@@ -179,10 +172,20 @@ function App() {
               </div>
               {isActive ? (
                 <div className="smallCardActive">
-                  <label className="switch">
-                    <input type="checkbox" />
-                    <span className="slider"></span>
-                  </label>
+                  <div className="sliderGroup">
+                    <div className="sliderTitle">Admin Unlock</div>
+                    <label className="switch">
+                      <input type="checkbox" />
+                      <span className="slider"></span>
+                    </label>
+                  </div>
+                  <div className="sliderGroup">
+                    <div className="sliderTitle">Public Unlock</div>
+                    <label className="switch">
+                      <input type="checkbox" />
+                      <span className="slider"></span>
+                    </label>
+                  </div>
                 </div>
               ) : (
                 <div className="smallCardInactive"></div>
@@ -191,7 +194,7 @@ function App() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 
