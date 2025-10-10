@@ -46,8 +46,16 @@ function App() {
         });
       } else {
         const parsedUser = JSON.parse(localUser);
-        setUnlocked(parsedUser[0].unlocked);
-        setAccessible(parsedUser[0].accessible);
+        setUnlocked(
+          Array.isArray(data[0].unlocked)
+            ? data[0].unlocked
+            : JSON.parse(data[0].unlocked || "[]")
+        );
+        setAccessible(
+          Array.isArray(data[0].accessible)
+            ? data[0].accessible
+            : JSON.parse(data[0].accessible || "[]")
+        );
         setUserId(parsedUser[0].id);
       }
     } else {
@@ -65,51 +73,44 @@ function App() {
 
   useEffect(() => {
     if (items.length === 0 || unlocked.length === 0) return;
-    let unlockedOnly = [];
-    let tempArray = [];
 
-    items.forEach((item) => {
-      if (unlocked.includes(item.id) && !accessible.includes(item.id)) {
-        unlockedOnly.push(item.id);
-        console.log("check:", unlockedOnly);
-      }
-    });
+    let newAccessible = [...accessible];
+    let changed = true;
 
-    function checkStatus() {
-      setItems((prevItems) =>
-        prevItems.map((item) => {
-          let newItem = { ...item };
+    while (changed) {
+      changed = false;
 
-          if (unlocked.includes(item.id)) {
-            newItem.unlocked = "yes";
-          }
+      items.forEach((item) => {
+        const isUnlocked = unlocked.includes(item.id);
+        const hasNoRequirements =
+          Array.isArray(item.requires) && item.requires.length === 0;
+        const allRequirementsMet =
+          Array.isArray(item.requires) &&
+          item.requires.every((reqId) => newAccessible.includes(reqId));
 
-          if (
-            unlockedOnly.includes(item.id) &&
-            ((Array.isArray(item.requires) &&
-              item.requires.every((reqId) => accessible.includes(reqId))) ||
-              (Array.isArray(item.requires) && item.requires.length === 0))
-          ) {
-            newItem.accessible = "yes";
-            unlockedOnly = unlockedOnly.filter((val) => val !== item.id);
-            setAccessible((prev) => [...prev, item.id]);
-            tempArray.push(item.id);
-            console.log("tempArray: ", tempArray);
-            checkStatus();
-          }
+        const shouldBeAccessible =
+          isUnlocked && (hasNoRequirements || allRequirementsMet);
+        const isCurrentlyAccessible = newAccessible.includes(item.id);
 
-          if (tempArray.length > 0) {
-            accessible.push(tempArray);
-            tempArray = [];
-            console.log(accessible);
-          }
+        // Add if it should be accessible but isn't yet
+        if (shouldBeAccessible && !isCurrentlyAccessible) {
+          newAccessible.push(item.id);
+          changed = true;
+        }
 
-          return newItem;
-        })
-      );
+        // Remove if it shouldn’t be accessible but currently is
+        if (!shouldBeAccessible && isCurrentlyAccessible) {
+          newAccessible = newAccessible.filter((id) => id !== item.id);
+          changed = true;
+        }
+      });
     }
-    checkStatus();
-  }, [unlocked, accessible]);
+
+    // Only update if there was an actual change
+    if (JSON.stringify(newAccessible) !== JSON.stringify(accessible)) {
+      setAccessible(newAccessible);
+    }
+  }, [unlocked, items]);
 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -135,6 +136,18 @@ function App() {
     return <p>Loading...</p>;
   }
 
+  const handleAdminUnlock = (item) => {
+    if (unlocked.includes(item.id)) {
+      let newUnlocked = unlocked.filter((val) => val !== item.id);
+      setUnlocked(newUnlocked);
+      let newAccessible = accessible.filter((val) => val !== item.id);
+      setAccessible(newAccessible);
+    } else {
+      let newUnlocked = [...unlocked, item.id];
+      setUnlocked(newUnlocked);
+    }
+  };
+
   return (
     <div className="mainContainer">
       <Header
@@ -150,9 +163,7 @@ function App() {
         setFilter={setFilter}
       />
       <Sidebar />
-
       {/* Filter buttons */}
-
       <div className="gridContainer">
         {filteredItems.map((item) => {
           let statusClass = "locked";
@@ -175,14 +186,21 @@ function App() {
                   <div className="sliderGroup">
                     <div className="sliderTitle">Admin Unlock</div>
                     <label className="switch">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={unlocked.includes(item.id)}
+                        onChange={() => handleAdminUnlock(item)}
+                      />
                       <span className="slider"></span>
                     </label>
                   </div>
                   <div className="sliderGroup">
                     <div className="sliderTitle">Public Unlock</div>
                     <label className="switch">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={unlocked.includes(item.id)}
+                      />
                       <span className="slider"></span>
                     </label>
                   </div>
