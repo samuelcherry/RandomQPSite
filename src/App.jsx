@@ -4,6 +4,7 @@ import Header from "./components/header";
 import Sidebar from "./components/Sidebar";
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
+import QuestMode from "./components/questMode";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -164,6 +165,7 @@ function App() {
       />
       <Sidebar />
       {/* Filter buttons */}
+
       <div className="gridContainer">
         {filteredItems.map((item) => {
           let statusClass = "locked";
