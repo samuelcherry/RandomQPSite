@@ -166,53 +166,60 @@ function App() {
       <Sidebar />
       {/* Filter buttons */}
 
-      <div className="gridContainer">
-        {filteredItems.map((item) => {
-          let statusClass = "locked";
-
-          if (unlocked.includes(item.id)) statusClass = "unlocked";
-          if (accessible.includes(item.id)) statusClass = "accessible";
-
-          const isActive = activeCard === item.id;
-
-          return (
-            <div key={item.id} className="cardWrapper">
-              <div
-                className={`card ${statusClass}`}
-                onClick={() => setActiveCard(isActive ? null : item.id)}
-              >
-                <img src={item.icon} alt={item.title} title={item.title} />
-              </div>
-              {isActive ? (
-                <div className="smallCardActive">
-                  <div className="sliderGroup">
-                    <div className="sliderTitle">Admin Unlock</div>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={unlocked.includes(item.id)}
-                        onChange={() => handleAdminUnlock(item)}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </div>
-                  <div className="sliderGroup">
-                    <div className="sliderTitle">Public Unlock</div>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={unlocked.includes(item.id)}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </div>
+      <div className="mainContent">
+        <QuestMode
+          unlocked={unlocked}
+          setUnlocked={setUnlocked}
+          accessible={accessible}
+          setAccessible={setAccessible}
+          userId={userId}
+          setUserId={setUserId}
+        />
+        <div className="gridContainer">
+          {filteredItems.map((item) => {
+            let statusClass = "locked";
+            if (unlocked.includes(item.id)) statusClass = "unlocked";
+            if (accessible.includes(item.id)) statusClass = "accessible";
+            const isActive = activeCard === item.id;
+            return (
+              <div key={item.id} className="cardWrapper">
+                <div
+                  className={`card ${statusClass}`}
+                  onClick={() => setActiveCard(isActive ? null : item.id)}
+                >
+                  <img src={item.icon} alt={item.title} title={item.title} />
                 </div>
-              ) : (
-                <div className="smallCardInactive"></div>
-              )}
-            </div>
-          );
-        })}
+                {isActive ? (
+                  <div className="smallCardActive">
+                    <div className="sliderGroup">
+                      <div className="sliderTitle">Admin Unlock</div>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={unlocked.includes(item.id)}
+                          onChange={() => handleAdminUnlock(item)}
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </div>
+                    <div className="sliderGroup">
+                      <div className="sliderTitle">Public Unlock</div>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={unlocked.includes(item.id)}
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="smallCardInactive"></div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
