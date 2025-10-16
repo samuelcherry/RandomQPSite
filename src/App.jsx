@@ -41,8 +41,6 @@ function App() {
           setUnlocked(data[0].unlocked);
           setAccessible(data[0].accessible);
           setUserId(data[0].id);
-          let viewUnlocked = data[0].unlocked;
-          console.log(viewUnlocked);
           localStorage.setItem("userData", JSON.stringify(data));
         });
       } else {

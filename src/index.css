@@ -86,8 +86,7 @@ h1 {
 }
 
 .gridContainer img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 50%;
   object-fit: contain;
   border-radius: 8px;
 }
@@ -158,21 +157,18 @@ button:active {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-.smallCard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  max-height: 50px;
-}
-
 .smallCardActive {
   flex-direction: column;
-  max-height: 50px;
+  background-color: #505070;
+  z-index: 1;
+  padding: 15px;
 }
 
 .smallCardInactive {
+  max-height: 0px;
   flex-direction: column;
+  background-color: yellow;
+  z-index: 1;
 }
 
 .switch {

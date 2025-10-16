@@ -8,6 +8,5 @@ export const fetchUser = async () => {
     return UserData || [];
   } catch (UserError) {
     console.error(UserError);
-    setError(UserError);
   }
 };

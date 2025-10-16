@@ -1,13 +1,18 @@
 import supabase from "../../supabaseClient";
+import { fetchUser } from "./fetchUser";
 
 export default async function updateAccessible(userId, tempArray) {
   console.log("updated triggered");
   try {
     const { data, error } = await supabase
       .from("Users")
-      .update({ accessible: tempArray })
+      .update({ unlocked: tempArray })
       .eq("id", userId)
       .select();
+
+    fetchUser().then((userData) => {
+      localStorage.setItem("userData", JSON.stringify(userData));
+    });
 
     if (error) {
       console.error("Supabase error:", error);

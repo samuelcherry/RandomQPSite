@@ -16,19 +16,7 @@ const Header = ({
 }) => {
   const handleSave = (e) => {
     console.log("saved");
-    updateAccessible(userId, accessible);
-  };
-
-  const handleSync = (e) => {
-    console.log("synced");
-    fetchUser().then((data) => {
-      setUnlocked(data[0].unlocked);
-      setAccessible(data[0].accessible);
-      setUserId(data[0].id);
-      let viewUnlocked = data[0].unlocked;
-      console.log(viewUnlocked);
-      localStorage.setItem("userData", JSON.stringify(data));
-    });
+    updateAccessible(userId, unlocked);
   };
 
   const handleAdmin = (e) => {
@@ -42,7 +30,6 @@ const Header = ({
     <div className="headerContainer">
       <div className="headerTitle">
         <button onClick={handleSave}>Save</button>
-        <button onClick={handleSync}>Sync</button>
         <h1> Chanceman Mode</h1>
         <button onClick={handleAdmin}>Admin</button>
         <button onClick={handlePublic}>Public</button>
@@ -56,11 +43,6 @@ const Header = ({
           onChange={(e) => setSearch(e.target.value)}
         ></input>
         <button>Search</button>
-      </div>
-      <div className="filterContainer">
-        <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("unlocked")}>Unlocked</button>
-        <button onClick={() => setFilter("locked")}>Locked</button>
       </div>
     </div>
   );

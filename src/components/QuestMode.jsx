@@ -49,8 +49,6 @@ const QuestMode = ({
                 {itemList
                   .filter((item) => item.id === req)
                   .map((item) => {
-                    console.log("itemList: ", item);
-                    console.log("unlocked: ", unlocked);
                     let statusClass = "locked";
                     if (unlocked?.includes(item.id)) statusClass = "unlocked";
                     if (accessible?.includes(item.id))
