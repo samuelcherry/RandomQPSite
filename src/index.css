@@ -29,16 +29,6 @@ h1 {
   grid-area: mainContent;
 }
 
-.gridContainer {
-  grid-area: gridContent;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
-  justify-items: center;
-  align-items: center;
-  padding-bottom: 15px;
-}
-
 .headerContainer {
   grid-area: header;
   width: 100%;
@@ -48,6 +38,15 @@ h1 {
 .sidebarContainer {
   grid-area: sidebar;
   padding: 15px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  align-items: center;
+  padding-bottom: 15px;
 }
 
 .headerTitle {

@@ -137,17 +137,7 @@ function App() {
     return <p>Loading...</p>;
   }
 
-  const handleAdminUnlock = (item) => {
-    if (unlocked.includes(item.id)) {
-      let newUnlocked = unlocked.filter((val) => val !== item.id);
-      setUnlocked(newUnlocked);
-      let newAccessible = accessible.filter((val) => val !== item.id);
-      setAccessible(newAccessible);
-    } else {
-      let newUnlocked = [...unlocked, item.id];
-      setUnlocked(newUnlocked);
-    }
-  };
+  console.log("App.js unlocked: ", unlocked);
 
   return (
     <div className="mainContainer">
@@ -174,52 +164,9 @@ function App() {
           setAccessible={setAccessible}
           userId={userId}
           setUserId={setUserId}
+          activeCard={activeCard}
+          setActiveCard={setActiveCard}
         />
-        <div className="gridContainer">
-          {filteredItems.map((item) => {
-            let statusClass = "locked";
-            if (unlocked.includes(item.id)) statusClass = "unlocked";
-            if (accessible.includes(item.id)) statusClass = "accessible";
-            const isActive = activeCard === item.id;
-            return (
-              <div key={item.id} className="cardWrapper">
-                <div
-                  className={`card ${statusClass}`}
-                  onClick={() => setActiveCard(isActive ? null : item.id)}
-                >
-                  <img src={item.icon} alt={item.title} title={item.title} />
-                </div>
-                {isActive ? (
-                  <div className="smallCardActive">
-                    <div className="sliderGroup">
-                      <div className="sliderTitle">Admin Unlock</div>
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={unlocked.includes(item.id)}
-                          onChange={() => handleAdminUnlock(item)}
-                        />
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                    <div className="sliderGroup">
-                      <div className="sliderTitle">Public Unlock</div>
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={unlocked.includes(item.id)}
-                        />
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="smallCardInactive"></div>
-                )}
-              </div>
-            );
-          })}
-        </div>
       </div>
     </div>
   );
