@@ -1,12 +1,14 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import Header from "./components/header";
+import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
 import QuestMode from "./components/questMode";
+import Login from "./components/Login";
 
 function App() {
+  const [authToken, setAuthToken] = useState(null);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [unlocked, setUnlocked] = useState([]);
@@ -67,6 +69,11 @@ function App() {
       setAccessible(savedUser[0].accessible);
       setUserId(savedUser[0].id);
       setLoading(false);
+    }
+
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      setAuthToken(token);
     }
   }, []);
 
