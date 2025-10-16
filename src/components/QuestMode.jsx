@@ -33,6 +33,10 @@ const QuestMode = ({
       setUnlocked(newUnlocked);
     }
   };
+
+  const handleItemPage = () => {
+    console.log("Item Page Pressed");
+  };
   return (
     <div>
       {questList.map((quest) => (
@@ -68,6 +72,7 @@ const QuestMode = ({
                         </div>
                         {isActive ? (
                           <div className="smallCardActive">
+                            <button onClick={handleItemPage}>Item Page</button>
                             <div className="sliderGroup">
                               <div className="sliderTitle">Admin Unlock</div>
                               <label className="switch">
