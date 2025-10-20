@@ -229,3 +229,29 @@ input:checked + .slider:before {
 .sliderTitle {
   max-height: 20px;
 }
+
+.loginContainer {
+  background-color: #505070;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loginFields {
+  padding: 5px;
+}
+
+.loginFields input {
+  margin: 5px;
+}
+
+.fields {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -1,22 +1,14 @@
-import React from "react";
-import { fetchUser } from "../utils/fetchUser";
 import updateAccessible from "../utils/addToAccessible";
 
-const Header = ({
-  unlocked,
-  setUnlocked,
-  accessible,
-  setAccessible,
-  userId,
-  setUserId,
-  search,
-  setSearch,
-  filter,
-  setFilter
-}) => {
+const Header = ({ unlocked, userId, search, setSearch, setAuthToken }) => {
   const handleSave = (e) => {
     console.log("saved");
     updateAccessible(userId, unlocked);
+  };
+
+  const handleLogOut = (e) => {
+    localStorage.removeItem("authToken");
+    setAuthToken(null);
   };
 
   const handleAdmin = (e) => {
@@ -30,6 +22,7 @@ const Header = ({
     <div className="headerContainer">
       <div className="headerTitle">
         <button onClick={handleSave}>Save</button>
+        <button onClick={handleLogOut}>Log Out</button>
         <h1> Chanceman Mode</h1>
         <button onClick={handleAdmin}>Admin</button>
         <button onClick={handlePublic}>Public</button>

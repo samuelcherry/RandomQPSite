@@ -18,6 +18,9 @@ function App() {
   const [LockedValue, setLockedValue] = useState("True");
 
   useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) setAuthToken(token);
+
     const localItems = localStorage.getItem("itemList");
     const localUser = localStorage.getItem("userData");
 
@@ -69,11 +72,6 @@ function App() {
       setAccessible(savedUser[0].accessible);
       setUserId(savedUser[0].id);
       setLoading(false);
-    }
-
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      setAuthToken(token);
     }
   }, []);
 
@@ -142,7 +140,9 @@ function App() {
     return <p>Loading...</p>;
   }
 
-  console.log("App.js unlocked: ", unlocked);
+  if (!authToken) {
+    return <Login setAuthToken={setAuthToken} />;
+  }
 
   return (
     <div className="mainContainer">
@@ -157,6 +157,7 @@ function App() {
         setSearch={setSearch}
         filter={filter}
         setFilter={setFilter}
+        setAuthToken={setAuthToken}
       />
       <Sidebar />
       {/* Filter buttons */}
