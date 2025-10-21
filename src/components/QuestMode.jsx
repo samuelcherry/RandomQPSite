@@ -72,7 +72,7 @@ const QuestMode = ({
                           <div className="smallCardActive">
                             <button onClick={handleItemPage}>Item Page</button>
                             <div className="sliderGroup">
-                              <div className="sliderTitle">Admin Unlock</div>
+                              <div className="sliderTitle">Unlock</div>
                               <label className="switch">
                                 <input
                                   type="checkbox"
@@ -82,7 +82,7 @@ const QuestMode = ({
                                 <span className="slider"></span>
                               </label>
                             </div>
-                            <div className="sliderGroup">
+                            {/* <div className="sliderGroup">
                               <div className="sliderTitle">Public Unlock</div>
                               <label className="switch">
                                 <input
@@ -91,7 +91,7 @@ const QuestMode = ({
                                 />
                                 <span className="slider"></span>
                               </label>
-                            </div>
+                            </div> */}
                           </div>
                         ) : (
                           <div className="smallCardInactive"></div>

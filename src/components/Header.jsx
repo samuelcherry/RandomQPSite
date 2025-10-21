@@ -22,10 +22,10 @@ const Header = ({ unlocked, userId, search, setSearch, setAuthToken }) => {
     <div className="headerContainer">
       <div className="headerTitle">
         <button onClick={handleSave}>Save</button>
-        <button onClick={handleLogOut}>Log Out</button>
+        {/* <button onClick={handleLogOut}>Log Out</button> */}
         <h1> Chanceman Mode</h1>
-        <button onClick={handleAdmin}>Admin</button>
-        <button onClick={handlePublic}>Public</button>
+        {/* <button onClick={handleAdmin}>Admin</button>
+        <button onClick={handlePublic}>Public</button> */}
       </div>
       <div className="searchContainer">
         <input

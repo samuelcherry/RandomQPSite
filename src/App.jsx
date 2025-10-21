@@ -6,6 +6,8 @@ import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
 import QuestMode from "./components/questMode";
 import Login from "./components/Login";
+import Register from "./components/Register";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   const [authToken, setAuthToken] = useState(null);
@@ -15,7 +17,6 @@ function App() {
   const [accessible, setAccessible] = useState([]);
   const [userId, setUserId] = useState("");
   const [activeCard, setActiveCard] = useState(null);
-  const [LockedValue, setLockedValue] = useState("True");
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -141,7 +142,12 @@ function App() {
   }
 
   if (!authToken) {
-    return <Login setAuthToken={setAuthToken} />;
+    return (
+      <Routes>
+        <Route path="/" element={<Login setAuthToken={setAuthToken} />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    );
   }
 
   return (
@@ -159,8 +165,7 @@ function App() {
         setFilter={setFilter}
         setAuthToken={setAuthToken}
       />
-      <Sidebar />
-      {/* Filter buttons */}
+      {/* <Sidebar /> */}
 
       <div className="mainContent">
         <QuestMode

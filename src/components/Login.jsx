@@ -1,10 +1,13 @@
 import { useState } from "react";
 import supabase from "../../supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 export default function Login({ setAuthToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -27,22 +30,40 @@ export default function Login({ setAuthToken }) {
       setAuthToken(token);
     }
   }
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
   return (
     <form onSubmit={handleLogin} className="loginContainer">
       <h2>Login</h2>
+
       <div className="loginFields">
         <div className="fields">
           <label htmlFor="email">Email</label>
-          <input type="email" required />
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className="fields">
           <label htmlFor="Password">Password</label>
-          <input type="password" required />
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
       </div>
+
       <div className="fields">
         <button type="submit">Log In</button>
-        <button>Register</button>
+        {/* <button type="button" onClick={handleRegister}>
+          Register
+        </button> */}
       </div>
     </form>
   );
