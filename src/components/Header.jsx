@@ -27,16 +27,6 @@ const Header = ({ unlocked, userId, search, setSearch, setAuthToken }) => {
         {/* <button onClick={handleAdmin}>Admin</button>
         <button onClick={handlePublic}>Public</button> */}
       </div>
-      <div className="searchContainer">
-        <input
-          className="searchBar"
-          type="text"
-          placeholder="Search by name or quest..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        ></input>
-        <button>Search</button>
-      </div>
     </div>
   );
 };
