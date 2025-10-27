@@ -8,6 +8,7 @@ import QuestMode from "./components/questMode";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import { Route, Routes } from "react-router-dom";
+import { saveDataset, loadDataset } from "./utils/saveDataset";
 
 function App() {
   const [authToken, setAuthToken] = useState(null);
@@ -19,61 +20,39 @@ function App() {
   const [activeCard, setActiveCard] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) setAuthToken(token);
+    (async () => {
+      const token = localStorage.getItem("authToken");
+      if (token) setAuthToken(token);
 
-    const localItems = localStorage.getItem("itemList");
-    const localUser = localStorage.getItem("userData");
+      const cachedItems = await loadDataset("itemList");
+      const cachedUser = localStorage.getItem("userData");
 
-    if (!localItems || !localUser) {
-      console.log("Fetching form Supabase...");
-
-      if (!localItems) {
-        fetchItems().then((data) => {
-          // sort by id ascending
-          const sorted = [...data].sort((a, b) => a.id - b.id);
-          setItems(sorted);
-          setLoading(false);
-          console.log(sorted);
-          localStorage.setItem("itemList", JSON.stringify(data));
-        });
+      if (cachedItems) {
+        console.log("Loaded items from cache");
+        setItems(cachedItems);
       } else {
-        setItems(JSON.parse(localItems));
-        setLoading(false);
+        console.log("Fetching items from Supabase...");
+        const data = await fetchItems();
+        const sorted = [...data].sort((a, b) => a.id - b.id);
+        setItems(sorted);
+        await saveDataset("itemList", sorted);
       }
-
-      if (!localUser) {
-        fetchUser().then((data) => {
-          setUnlocked(data[0].unlocked);
-          setAccessible(data[0].accessible);
-          setUserId(data[0].id);
-          localStorage.setItem("userData", JSON.stringify(data));
-        });
-      } else {
-        const parsedUser = JSON.parse(localUser);
-        setUnlocked(
-          Array.isArray(data[0].unlocked)
-            ? data[0].unlocked
-            : JSON.parse(data[0].unlocked || "[]")
-        );
-        setAccessible(
-          Array.isArray(data[0].accessible)
-            ? data[0].accessible
-            : JSON.parse(data[0].accessible || "[]")
-        );
+      if (cachedUser) {
+        const parsedUser = JSON.parse(cachedUser);
+        setUnlocked(parsedUser[0].unlocked);
+        setAccessible(parsedUser[0].accessible);
         setUserId(parsedUser[0].id);
+      } else {
+        console.log("fetching user from Supabase...");
+        const data = await fetchUser();
+        setUnlocked(data[0].unlocked);
+        setAccessible(data[0].accessible);
+        setUserId(data[0].id);
+        localStorage.setItem("userData", JSON.stringify(data));
       }
-    } else {
-      console.log("Loading from LocalStorage...");
-      const savedItems = JSON.parse(localItems);
-      const savedUser = JSON.parse(localUser);
-
-      setItems(savedItems);
-      setUnlocked(savedUser[0].unlocked);
-      setAccessible(savedUser[0].accessible);
-      setUserId(savedUser[0].id);
       setLoading(false);
-    }
+      console.log("cache: ", cachedItems);
+    })();
   }, []);
 
   useEffect(() => {
@@ -177,6 +156,7 @@ function App() {
           setUserId={setUserId}
           activeCard={activeCard}
           setActiveCard={setActiveCard}
+          items={items}
         />
       </div>
     </div>

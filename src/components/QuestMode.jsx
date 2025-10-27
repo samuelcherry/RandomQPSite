@@ -8,19 +8,17 @@ const QuestMode = ({
   accessible,
   setAccessible,
   activeCard,
-  setActiveCard
+  setActiveCard,
+  items
 }) => {
   const [questList, setQuestList] = useState([]);
-  const [itemList, setItemList] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchQuests().then((questData) => {
       setQuestList(questData);
-      fetchItems().then((itemData) => {
-        setItemList(itemData);
-      });
     });
+    console.log("items", items);
   }, []);
 
   const handleAdminUnlock = (item) => {
@@ -35,14 +33,10 @@ const QuestMode = ({
     }
   };
 
-  const handleItemPage = () => {
-    console.log("Item Page Pressed");
-  };
-
   const filteredQuests = questList.filter((quest) => {
     if (!search.trim()) return true;
 
-    const matchingItems = itemList.filter((item) =>
+    const matchingItems = items.filter((item) =>
       item.title.toLowerCase().includes(search.toLocaleLowerCase())
     );
 
@@ -76,7 +70,7 @@ const QuestMode = ({
             <div className="gridContainer">
               {quest.requires.map((req) => (
                 <div key={req}>
-                  {itemList
+                  {items
                     .filter((item) => item.id === req)
                     .map((item) => {
                       let statusClass = "locked";
