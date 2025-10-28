@@ -33,23 +33,25 @@ const QuestMode = ({
     }
   };
 
-  const filteredQuests = questList.filter((quest) => {
-    if (!search.trim()) return true;
+  const filteredQuests = questList
+    .filter((quest) => {
+      if (!search.trim()) return true;
 
-    const matchingItems = items.filter((item) =>
-      item.title.toLowerCase().includes(search.toLocaleLowerCase())
-    );
+      const matchingItems = items.filter((item) =>
+        item.title.toLowerCase().includes(search.toLocaleLowerCase())
+      );
 
-    const questHasMatch = quest.requires.some((reqId) =>
-      matchingItems.some((item) => item.id === reqId)
-    );
+      const questHasMatch = quest.requires.some((reqId) =>
+        matchingItems.some((item) => item.id === reqId)
+      );
 
-    const questNameMatch = quest.questName
-      .toLowerCase()
-      .includes(search.toLowerCase());
+      const questNameMatch = quest.questName
+        .toLowerCase()
+        .includes(search.toLowerCase());
 
-    return questHasMatch || questNameMatch;
-  });
+      return questHasMatch || questNameMatch;
+    })
+    .sort((a, b) => Number(a.id) - Number(b.id));
   return (
     <div>
       <div className="searchContainer">
