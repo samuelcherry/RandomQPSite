@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import { fetchItems } from "./utils/fetchPosts";
 import { fetchUser } from "./utils/fetchUser";
 import QuestMode from "./components/questMode";
+import ItemMode from "./components/ItemMode";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import { Route, Routes } from "react-router-dom";
@@ -18,6 +19,7 @@ function App() {
   const [accessible, setAccessible] = useState([]);
   const [userId, setUserId] = useState("");
   const [activeCard, setActiveCard] = useState(null);
+  const [itemMode, setItemMode] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -147,17 +149,31 @@ function App() {
       {/* <Sidebar /> */}
 
       <div className="mainContent">
-        <QuestMode
-          unlocked={unlocked}
-          setUnlocked={setUnlocked}
-          accessible={accessible}
-          setAccessible={setAccessible}
-          userId={userId}
-          setUserId={setUserId}
-          activeCard={activeCard}
-          setActiveCard={setActiveCard}
-          items={items}
-        />
+        <button onClick={() => setItemMode(true)}>Item Mode</button>
+        <button onClick={() => setItemMode(false)}>Quest Mode</button>
+        {!itemMode ? (
+          <QuestMode
+            unlocked={unlocked}
+            setUnlocked={setUnlocked}
+            accessible={accessible}
+            setAccessible={setAccessible}
+            userId={userId}
+            setUserId={setUserId}
+            activeCard={activeCard}
+            setActiveCard={setActiveCard}
+            items={items}
+          />
+        ) : (
+          <ItemMode
+            unlocked={unlocked}
+            setUnlocked={setUnlocked}
+            accessible={accessible}
+            setAccessible={setAccessible}
+            activeCard={activeCard}
+            setActiveCard={setActiveCard}
+            items={items}
+          />
+        )}
       </div>
     </div>
   );
